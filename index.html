@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>物权信息 - 数字酒藏</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 顶部导航栏 */
+        .header {
+            background: #fff;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .back-btn {
+            font-size: 24px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .header-domain {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Hero区域 */
+        .hero {
+            background: linear-gradient(135deg, #0a1628 0%, #1a3a5c 50%, #0d2137 100%);
+            background-color: transparent;
+            padding: 60px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(100, 150, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(100, 150, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-text {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-family: "Comic Sans MS", cursive;
+            font-size: 48px;
+            font-weight: bold;
+            color: #fff;
+            letter-spacing: 8px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .hero-subtitle {
+            font-family: "Comic Sans MS", cursive;
+            font-size: 42px;
+            font-weight: bold;
+            color: #fff;
+            letter-spacing: 8px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+        }
+
+        /* 主内容区 */
+        .container {
+            padding: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 数字酒证详情卡片 */
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 24px 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: relative;
+            border: 2px solid #d4a574;
+        }
+
+        .card::before,
+        .card::after {
+            content: '❖';
+            position: absolute;
+            color: #d4a574;
+            font-size: 20px;
+            top: 12px;
+        }
+
+        .card::before {
+            left: 16px;
+        }
+
+        .card::after {
+            right: 16px;
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-top: 8px;
+        }
+
+        .card-title {
+            font-family: "Comic Sans MS", cursive;
+            font-size: 20px;
+            color: #d4a574;
+            font-weight: 600;
+            letter-spacing: 2px;
+            position: relative;
+            display: inline-block;
+            padding: 0 20px;
+        }
+
+        .card-title::before,
+        .card-title::after {
+            content: '✦';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #d4a574;
+            font-size: 14px;
+        }
+
+        .card-title::before {
+            left: 0;
+        }
+
+        .card-title::after {
+            right: 0;
+        }
+
+        .certificate-title {
+            font-family: "Comic Sans MS", cursive;
+            text-align: center;
+            font-size: 24px;
+            color: #8b7355;
+            font-weight: 600;
+            letter-spacing: 6px;
+            margin-bottom: 20px;
+            padding: 12px 0;
+            border-top: 1px solid #e8dcc8;
+            border-bottom: 1px solid #e8dcc8;
+        }
+
+        /* 商品信息区域 */
+        .product-section {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .product-image {
+            width: 140px;
+            height: 180px;
+            flex-shrink: 0;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-info {
+            flex: 1;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .product-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            color: #555;
+        }
+
+        .info-label {
+            color: #888;
+        }
+
+        .info-value {
+            color: #333;
+            font-weight: 500;
+        }
+
+        /* 价格和持有人 */
+        .price-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-top: 1px solid #f0f0f0;
+            margin-top: 12px;
+        }
+
+        .price {
+            font-size: 20px;
+            color: #e74c3c;
+            font-weight: 700;
+        }
+
+        .holder {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* 详细信息列表 */
+        .detail-list {
+            margin-top: 16px;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f5f5f5;
+            font-size: 14px;
+        }
+
+        .detail-label {
+            color: #888;
+            min-width: 90px;
+        }
+
+        .detail-value {
+            color: #333;
+            text-align: right;
+            flex: 1;
+        }
+
+        /* 区块链印章 */
+        .blockchain-seal {
+            position: relative;
+            display: inline-block;
+            margin-left: 8px;
+        }
+
+        .seal-icon {
+            width: 60px;
+            height: 60px;
+            border: 2px solid #c41e3a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #c41e3a;
+            font-size: 10px;
+            transform: rotate(-15deg);
+            opacity: 0.6;
+            position: absolute;
+            right: -60px;
+            top: -10px;
+        }
+
+        /* 仓储信息卡片 */
+        .storage-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 24px 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: relative;
+            border: 2px solid #d4a574;
+        }
+
+        .storage-card::before,
+        .storage-card::after {
+            content: '❖';
+            position: absolute;
+            color: #d4a574;
+            font-size: 20px;
+            top: 12px;
+        }
+
+        .storage-card::before {
+            left: 16px;
+        }
+
+        .storage-card::after {
+            right: 16px;
+        }
+
+        .storage-title {
+            font-family: "Comic Sans MS", cursive;
+            text-align: center;
+            font-size: 18px;
+            color: #d4a574;
+            font-weight: 600;
+            letter-spacing: 2px;
+            position: relative;
+            display: inline-block;
+            padding: 0 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .storage-title::before,
+        .storage-title::after {
+            content: '✦';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #d4a574;
+            font-size: 14px;
+        }
+
+        .storage-title::before {
+            left: 0;
+        }
+
+        .storage-title::after {
+            right: 0;
+        }
+
+        /* 查看按钮 */
+        .view-btn {
+            color: #4a90e2;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /* 响应式优化 */
+        @media (max-width: 400px) {
+            .hero-title {
+                font-size: 36px;
+                letter-spacing: 4px;
+            }
+            .hero-subtitle {
+                font-size: 32px;
+                letter-spacing: 4px;
+            }
+            .product-image {
+                width: 120px;
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <div class="header">
+        <div class="header-left">
+            <a href="#" class="back-btn">×</a>
+            <span class="header-title">物权信息</span>
+        </div>
+        <span class="header-domain">tongtaijz.shop</span>
+    </div>
+
+    <!-- Hero区域 -->
+    <div class="hero">
+        <div class="hero-text">
+            <div class="hero-title">藏新酒</div>
+            <div class="hero-subtitle">喝老酒</div>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="container">
+        <!-- 数字酒证详情卡片 -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">数字酒证详情</div>
+            </div>
+
+            <div class="certificate-title">会稽山区块链酒证</div>
+
+            <div class="product-section">
+                <div class="product-image">
+                    <img src="O1CN01jfyMh91pYQEI5CeGe_!!2204283775372.jpg" alt="会稽山绍兴酒">
+                </div>
+                <div class="product-info">
+                    <div class="product-name">10L会稽山绍兴酒【收藏款】</div>
+                    <div class="info-row">
+                        <span>2021午年生肖酒</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">酒厂：</span>
+                        <span class="info-value">2020年冬酿原酒</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">产品标准号：</span>
+                        <span class="info-value">GB/T17946...</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">酒精度：</span>
+                        <span class="info-value">≥15.5%vol</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">总糖：</span>
+                        <span class="info-value">15.1g/L-40.0g/L</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">产地：</span>
+                        <span class="info-value">浙江绍兴</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="price-section">
+                <div>
+                    <div style="font-size: 12px; color: #888; margin-bottom: 4px;">当前市场价</div>
+                    <div class="price">¥1000.00</div>
+                </div>
+                <div class="holder">
+                    <div style="font-size: 12px; color: #888; margin-bottom: 4px;">持有人</div>
+                    <div>会******户</div>
+                </div>
+            </div>
+
+            <div class="detail-list">
+                <div class="detail-item">
+                    <span class="detail-label">锚定商品</span>
+                    <span class="detail-value">10L会稽山绍兴酒2020年冬酿原酒</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">发行方</span>
+                    <span class="detail-value">会稽山绍兴酒股份有限公司</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">生产日期</span>
+                    <span class="detail-value">20210804</span>
+                    <span style="margin-left: auto; color: #888;">品牌</span>
+                    <span style="color: #333;">会稽山</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">发行时间</span>
+                    <span class="detail-value">2021-08-13 17:36:46</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 酒证编号和区块链信息 -->
+        <div class="card">
+            <div class="detail-list">
+                <div class="detail-item">
+                    <span class="detail-label">酒证编号</span>
+                    <span class="detail-value">0423</span>
+                </div>
+                <div class="detail-item" style="align-items: flex-start;">
+                    <span class="detail-label">区块链地址</span>
+                    <span class="detail-value" style="position: relative;">
+                        antchain.antgroup.com
+                        <svg class="seal-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" style="left: 390px;">
+                            <circle cx="30" cy="30" r="28" fill="none" stroke="#c41e3a" stroke-width="2"/>
+                            <text x="30" y="20" font-size="8" fill="#c41e3a" text-anchor="middle">蚂蚁集团</text>
+                            <text x="30" y="32" font-size="8" fill="#c41e3a" text-anchor="middle">区块链</text>
+                            <text x="30" y="44" font-size="8" fill="#c41e3a" text-anchor="middle">认证</text>
+                            <path d="M 15 30 L 45 30 M 30 15 L 30 45" stroke="#c41e3a" stroke-width="1" opacity="0.3"/>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 锚定商品仓储信息 -->
+        <div class="storage-card">
+            <div class="card-header">
+                <div class="storage-title">锚定商品仓储信息</div>
+            </div>
+
+            <div class="detail-list">
+                <div class="detail-item">
+                    <span class="detail-label">存储仓库</span>
+                    <span class="detail-value">会稽山数字酒庄1号仓</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">仓库地址</span>
+                    <span class="detail-value">浙江省 绍兴市 柯桥区 湖塘街道杨绍路2579号</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">保管方</span>
+                    <span class="detail-value">会稽山绍兴酒股份有限公司</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">仓库负责人</span>
+                    <span class="detail-value">王*龙</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">联系电话</span>
+                    <span class="detail-value">0575-84889132</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">位置信息</span>
+                    <span class="detail-value">04货架01层01排095货位</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">货位编码</span>
+                    <span class="detail-value">KJSSZJZ0104-01-01-095</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">入库照片</span>
+                    <a href="#" class="view-btn">查看</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
